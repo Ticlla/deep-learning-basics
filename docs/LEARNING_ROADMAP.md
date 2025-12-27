@@ -635,8 +635,8 @@ net.SGD(training_data, 60, 10, 0.03, validation_data, test_data)
 |-------|-------|--------|
 | 1 | Data Loading (mnist_loader.py) | ✅ Complete |
 | 2 | Basic Network (network.py) | ✅ Complete |
-| 3 | Improved Network (network2.py) | ⬜ Not Started |
-| 4 | CNNs (network3.py, conv.py) | ⬜ Not Started |
+| 3 | Improved Network (network2.py) | ✅ Complete |
+| 4 | CNNs (network3.py, conv.py) | 🔄 In Progress |
 
 ---
 
