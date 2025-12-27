@@ -313,16 +313,46 @@ class CNN(nn.Module):
 
 | Script | Description |
 |--------|-------------|
-| `src/level4/1_cnn_pytorch.py` | Modern PyTorch CNN implementation |
-| `src/level4/2_visualize_features.py` | Visualize learned filters |
-| `src/level4/3_interactive_cnn.py` | Interactive demo with trained CNN |
+| `src/level4/1_cnn_pytorch.py` | Modern PyTorch CNN implementation + training |
+| `src/level4/2_interactive_cnn.py` | Interactive demo - draw digits and see CNN predictions |
 
 ### Running the Scripts
 
 ```bash
+# Train the CNN (saves model to models/level4_cnn.pt)
 cd /home/alcidesticlla/Documents/MOOC/mniels/neural-networks-and-deep-learning/src
 python level4/1_cnn_pytorch.py
+
+# Run interactive demo (requires trained model)
+python level4/2_interactive_cnn.py
 ```
+
+---
+
+## 🖌️ Interactive Demo Features
+
+The `2_interactive_cnn.py` demo includes:
+
+### MNIST-Style Preprocessing
+Hand-drawn digits look different from MNIST training data. The demo applies preprocessing to improve recognition:
+
+```python
+def preprocess_image(self):
+    """
+    MNIST-style centering for better accuracy:
+    1. Find bounding box of the digit
+    2. Crop to just the digit
+    3. Resize to fit in 20×20 box (preserving aspect ratio)
+    4. Center in 28×28 image
+    5. Apply Gaussian blur for anti-aliasing
+    """
+```
+
+### Features
+- **Real-time predictions** as you draw
+- **28×28 preview** showing what the CNN actually sees
+- **Confidence bars** for all 10 digit classes
+- **Model accuracy display** (~99.29% on MNIST test set)
 
 ---
 
@@ -334,8 +364,9 @@ python level4/1_cnn_pytorch.py
 4. **ReLU prevents vanishing gradients** - better than sigmoid for deep nets
 5. **Dropout prevents overfitting** - like training many networks
 6. **Softmax gives probabilities** - outputs sum to 1
+7. **Preprocessing matters** - centering hand-drawn digits improves recognition
 
 ---
 
-*Next: Try the interactive CNN demo to draw digits and see real-time predictions!*
+*Try the interactive CNN demo: `python level4/2_interactive_cnn.py`*
 

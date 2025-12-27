@@ -758,6 +758,52 @@ plt.show()
 
 ---
 
+## 🔬 Exploration Scripts
+
+| Script | Description |
+|--------|-------------|
+| `src/level2/1_neural_network.py` | Step-by-step network implementation |
+| `src/level2/2_interactive_digit_recognition.py` | Draw digits and see real-time predictions |
+
+### Interactive Demo Features
+
+The `2_interactive_digit_recognition.py` demo includes several improvements:
+
+**Model Caching**
+- Saves trained model to `digit_model.pkl`
+- Loads instantly on subsequent runs (no retraining)
+
+**MNIST-Style Preprocessing**
+```python
+def preprocess_image(self):
+    """
+    Centers the drawn digit like MNIST:
+    1. Find bounding box of non-zero pixels
+    2. Crop to just the digit
+    3. Resize to fit in 20×20 box (preserving aspect ratio)
+    4. Center in 28×28 image
+    5. Apply Gaussian blur for anti-aliasing
+    """
+```
+
+**28×28 Preview**
+- Shows what the network actually sees after preprocessing
+- Helps understand why some digits are misclassified
+
+**Larger Network**
+- Architecture: `[784, 100, 10]` (vs original `[784, 30, 10]`)
+- 15 epochs of training
+- Achieves ~96.5% accuracy
+
+### Running the Demo
+
+```bash
+cd /home/alcidesticlla/Documents/MOOC/mniels/neural-networks-and-deep-learning/src
+python level2/2_interactive_digit_recognition.py
+```
+
+---
+
 ## Next Steps: Level 3
 
 Level 3 will improve our network with:
@@ -767,5 +813,5 @@ Level 3 will improve our network with:
 3. **Better Initialization** - Xavier/He initialization
 4. **Learning Rate Schedules** - Adaptive learning rates
 
-These techniques can push accuracy from 94% to 98%+!
+These techniques can push accuracy from 96% to 98%+!
 

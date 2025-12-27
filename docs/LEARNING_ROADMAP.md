@@ -636,7 +636,34 @@ net.SGD(training_data, 60, 10, 0.03, validation_data, test_data)
 | 1 | Data Loading (mnist_loader.py) | ✅ Complete |
 | 2 | Basic Network (network.py) | ✅ Complete |
 | 3 | Improved Network (network2.py) | ✅ Complete |
-| 4 | CNNs (network3.py, conv.py) | 🔄 In Progress |
+| 4 | CNNs (PyTorch) | ✅ Complete |
+
+---
+
+## 🖌️ Interactive Demos
+
+Each level includes an interactive demo to draw digits and test the network:
+
+| Level | Script | Accuracy | Features |
+|-------|--------|----------|----------|
+| 2 | `level2/2_interactive_digit_recognition.py` | ~96.5% | Model caching, MNIST-style centering, 28×28 preview |
+| 3 | `level3/2_interactive_improved.py` | ~97.7% | Cross-entropy, L2 regularization |
+| 4 | `level4/2_interactive_cnn.py` | ~99.3% | CNN with BatchNorm, Dropout, MNIST-style centering |
+
+### Running Demos
+
+```bash
+cd src
+
+# Level 2: Basic network
+python level2/2_interactive_digit_recognition.py
+
+# Level 3: Improved network  
+python level3/2_interactive_improved.py
+
+# Level 4: CNN (requires training first: python level4/1_cnn_pytorch.py)
+python level4/2_interactive_cnn.py
+```
 
 ---
 
