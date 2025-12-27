@@ -26,7 +26,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import tkinter as tk
 from tkinter import ttk
 import numpy as np
-from PIL import Image, ImageDraw, ImageTk
+from PIL import Image, ImageDraw, ImageTk, ImageFilter
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -277,12 +277,54 @@ class CNNDigitRecognizer:
         self.preview_canvas.delete('all')
     
     def preprocess_image(self):
-        """Preprocess drawn image to 28x28 for CNN"""
-        # Resize to 28x28
-        img = self.image.resize((28, 28), Image.Resampling.LANCZOS)
+        """
+        Preprocess drawn image to 28x28 for CNN.
+        
+        Uses MNIST-style centering for better accuracy:
+        - Finds bounding box of the digit
+        - Crops and resizes to fit in 20x20 box
+        - Centers in 28x28 image
+        """
+        img_array = np.array(self.image)
+        
+        # Find bounding box of non-zero pixels
+        rows = np.any(img_array > 0, axis=1)
+        cols = np.any(img_array > 0, axis=0)
+        
+        if not rows.any() or not cols.any():
+            # Empty image
+            return np.zeros((28, 28), dtype=np.float32)
+        
+        # Get bounding box
+        rmin, rmax = np.where(rows)[0][[0, -1]]
+        cmin, cmax = np.where(cols)[0][[0, -1]]
+        
+        # Crop to bounding box
+        cropped = self.image.crop((cmin, rmin, cmax + 1, rmax + 1))
+        
+        # Calculate size to fit in 20x20 box while preserving aspect ratio
+        w, h = cropped.size
+        if w > h:
+            new_w = 20
+            new_h = max(1, int(20 * h / w))
+        else:
+            new_h = 20
+            new_w = max(1, int(20 * w / h))
+        
+        # Resize to fit in 20x20
+        cropped = cropped.resize((new_w, new_h), Image.Resampling.LANCZOS)
+        
+        # Create 28x28 image and paste centered
+        centered = Image.new('L', (28, 28), 0)
+        paste_x = (28 - new_w) // 2
+        paste_y = (28 - new_h) // 2
+        centered.paste(cropped, (paste_x, paste_y))
+        
+        # Apply slight blur for anti-aliasing (matches MNIST style)
+        centered = centered.filter(ImageFilter.GaussianBlur(radius=0.5))
         
         # Convert to numpy and normalize
-        img_array = np.array(img, dtype=np.float32) / 255.0
+        img_array = np.array(centered, dtype=np.float32) / 255.0
         
         return img_array
     
